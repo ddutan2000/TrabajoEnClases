@@ -6,6 +6,11 @@
 package ec.edu.ups.vista;
 
 import ec.edu.ups.controlador.*;
+import ec.edu.ups.modelo.Procurador;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,6 +26,30 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
         controladorP=controladorProcurador;
         controladorR=controladorRegex;
     }
+    
+        public void limpiar(){
+        txtCedula.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtDireccion.setText("");
+        txtTelefono.setText("");
+        txtFechaN.setText("");
+    }
+    
+        public void ActualizarVista(List<Procurador> procuradores) {
+        DefaultTableModel modelo = (DefaultTableModel) tblProcuradores.getModel();
+        modelo.setRowCount(0);
+        for (Procurador procurador : procuradores) {
+            Object[] fila = new Object[5];
+            fila[0] = procurador.getCedula();
+            fila[1] = procurador.getNombre();
+            fila[2] = procurador.getApellido();
+            fila[3] = procurador.getDireccion();
+            fila[4] = procurador.getTelefono();
+            modelo.addRow(fila);
+        }
+        tblProcuradores.setModel(modelo);
+    }
 
     
     @SuppressWarnings("unchecked")
@@ -31,9 +60,9 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         txtCedula = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblProcuradores = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        txtFechaN = new javax.swing.JFormattedTextField();
         btnRegistrar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -52,7 +81,7 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
 
         jLabel6.setText("CEDULA:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblProcuradores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -75,11 +104,11 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblProcuradores);
 
         jLabel7.setText("FECHA DE NACIMIENTO:");
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("M/d/yyyy"))));
+        txtFechaN.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("M/d/yyyy"))));
 
         btnRegistrar.setText("REGISTRAR");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -148,7 +177,7 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                                            .addComponent(jFormattedTextField1)))))
+                                            .addComponent(txtFechaN)))))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(265, 265, 265)
@@ -183,7 +212,7 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFechaN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRegistrar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -200,13 +229,39 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
+
+                if (!txtCedula.getText().isEmpty() && !txtNombre.getText().isEmpty() && !txtApellido.getText().isEmpty()
+                && !txtTelefono.getText().isEmpty() && !txtDireccion.getText().isEmpty() && !txtFechaN.getText().isEmpty()) {
+            controladorR.ingreseRegex("^\\d{10}$");
+            boolean vCedula = controladorR.validar(txtCedula.getText());
+            if (vCedula) {
+                controladorR.ingreseRegex("^\\d{7,10}$");
+                boolean vTelefono = controladorR.validar(txtTelefono.getText());
+                if (vTelefono) {
+                    String cedula=txtCedula.getText();
+                    String nombre=txtNombre.getText();
+                    String apellido=txtApellido.getText();
+                    String direccion=txtDireccion.getText();
+                    String telefono=txtTelefono.getText();
+                    Date fecha= new Date(txtFechaN.getText());
+                    controladorP.createProcurador(cedula, nombre, apellido, fecha, direccion, telefono);
+                    JOptionPane.showMessageDialog(null, "CLIENTE REGISTRADO CON EXITO");
+                    limpiar();
+                    ActualizarVista(controladorP.findAll());
+                }else{
+                   JOptionPane.showMessageDialog(null, "FORMATO DE TELEFONO INCORRECTO"); 
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "FORMATO DE CEDULA INCORRECTO");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "EXISTEN CAMPOS VACIOS");
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrar;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -216,12 +271,13 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JTable tblProcuradores;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtDireccion;
+    private javax.swing.JFormattedTextField txtFechaN;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
