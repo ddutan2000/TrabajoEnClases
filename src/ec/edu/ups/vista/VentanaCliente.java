@@ -228,7 +228,6 @@ public class VentanaCliente extends javax.swing.JInternalFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
-        ActualizarVista(controladorP.findAll());
         if (!txtCedula.getText().isEmpty() && !txtNombre.getText().isEmpty() && !txtApellido.getText().isEmpty()
                 && !txtTelefono.getText().isEmpty() && !txtDireccion.getText().isEmpty() && !txtFechaN.getText().isEmpty()) {
             controladorR.ingreseRegex("^\\d{10}$");

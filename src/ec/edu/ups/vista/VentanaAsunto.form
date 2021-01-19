@@ -53,10 +53,15 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="cmbxProcurador" min="-2" pref="170" max="-2" attributes="0"/>
-                                  <Component id="btnRegistrar" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                                      <Component id="btnRegistrar" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="cmbxProcurador" min="-2" pref="217" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
@@ -68,9 +73,9 @@
                                   <Component id="CLIENTE" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="cmbxCliente" min="-2" pref="170" max="-2" attributes="0"/>
-                                  <Component id="cmbxEstado" min="-2" pref="170" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="cmbxEstado" min="-2" pref="217" max="-2" attributes="0"/>
+                                  <Component id="cmbxCliente" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="jScrollPane1" alignment="0" min="-2" pref="682" max="-2" attributes="0"/>
@@ -186,7 +191,7 @@
     <Component class="javax.swing.JFormattedTextField" name="txtFecha">
       <Properties>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format format="" subtype="-1" type="1"/>
+          <Format format="M/d/yyyy" subtype="-1" type="1"/>
         </Property>
       </Properties>
     </Component>
@@ -198,7 +203,7 @@
     <Component class="javax.swing.JFormattedTextField" name="txtFechaFinal">
       <Properties>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format format="" subtype="-1" type="1"/>
+          <Format format="M/d/yyyy" subtype="-1" type="1"/>
         </Property>
       </Properties>
     </Component>
