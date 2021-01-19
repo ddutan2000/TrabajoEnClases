@@ -7,7 +7,9 @@ package ec.edu.ups.vista;
 
 import ec.edu.ups.controlador.*;
 import ec.edu.ups.modelo.*;
+import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,6 +29,8 @@ public class VentanaAsunto extends javax.swing.JInternalFrame {
         controladorC = controladorPersona;
         controlaodrP = controladorProcurador;
         controladorR = controladorRegex;
+        ActualizarCmbxCliente();
+        ActualizarCmbxProcurador();
     }
 
     public void ActualizarVista(List<Asunto> asuntos) {
@@ -40,6 +44,7 @@ public class VentanaAsunto extends javax.swing.JInternalFrame {
             fila[3] = asunto.getEstado();
             fila[4] = asunto.getCedulaCliente();
             fila[5] = asunto.getCedulaProcurador();
+            modelo.addRow(fila);
         }
         tblAsunto.setModel(modelo);
     }
@@ -48,7 +53,7 @@ public class VentanaAsunto extends javax.swing.JInternalFrame {
         cmbxCliente.removeAllItems();
 
         cmbxCliente.addItem("--SELECCIONE UN CLIENTE--");
-        if (controladorC.findAll()== null) {
+        if (controladorC.findAll() == null) {
         } else {
             List<Cliente> clientes = controladorC.findAll();
 
@@ -59,12 +64,12 @@ public class VentanaAsunto extends javax.swing.JInternalFrame {
 
         cmbxCliente.setSelectedIndex(0);
     }
-    
-        public void ActualizarCmbxProcurador() {
+
+    public void ActualizarCmbxProcurador() {
         cmbxProcurador.removeAllItems();
 
         cmbxProcurador.addItem("--SELECCIONE UN PROCURADOR--");
-        if (controlaodrP.findAll()== null) {
+        if (controlaodrP.findAll() == null) {
         } else {
             List<Procurador> procuradores = controlaodrP.findAll();
 
@@ -75,7 +80,15 @@ public class VentanaAsunto extends javax.swing.JInternalFrame {
 
         cmbxProcurador.setSelectedIndex(0);
     }
-
+    
+    public void limpiar(){
+        txtNumero.setText("");
+        txtFecha.setText("");
+        txtFechaFinal.setText("");
+        cmbxCliente.setSelectedIndex(0);
+        cmbxEstado.setSelectedIndex(0);
+        cmbxProcurador.setSelectedIndex(0);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -117,11 +130,11 @@ public class VentanaAsunto extends javax.swing.JInternalFrame {
 
         jLabel7.setText("FECHA DE INICIO:");
 
-        txtFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
+        txtFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("M/d/yyyy"))));
 
         jLabel8.setText("FECHA FINAL:");
 
-        txtFechaFinal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
+        txtFechaFinal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("M/d/yyyy"))));
 
         CLIENTE.setText("CLIENTE:");
 
@@ -207,10 +220,13 @@ public class VentanaAsunto extends javax.swing.JInternalFrame {
                                                 .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(cmbxProcurador, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnRegistrar)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(64, 64, 64)
+                                        .addComponent(btnRegistrar))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmbxProcurador, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -218,9 +234,9 @@ public class VentanaAsunto extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel3))
                                     .addComponent(CLIENTE, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cmbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbxCliente, 0, 1, Short.MAX_VALUE)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
@@ -280,11 +296,40 @@ public class VentanaAsunto extends javax.swing.JInternalFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
+        if (!txtNumero.getText().isEmpty() && !txtFecha.getText().isEmpty() && !txtFechaFinal.getText().isEmpty() && cmbxCliente.getSelectedIndex() != 0
+                && cmbxEstado.getSelectedIndex() != 0 && cmbxProcurador.getSelectedIndex() != 0) {
+            controladorR.ingreseRegex("^\\d$");
+            boolean vNumero = controladorR.validar(txtNumero.getText());
+            if (vNumero) {
+                int numero = Integer.parseInt(txtNumero.getText());
+                Date fechaI = new Date(txtFecha.getText());
+                Date fechaS = new Date(txtFechaFinal.getText());
+                String estado = String.valueOf(cmbxEstado.getSelectedItem());
+                String cliente = String.valueOf(cmbxCliente.getSelectedItem());
+                String procurador = String.valueOf(cmbxProcurador.getSelectedItem());
+                controladorA.createAsunto(numero, fechaI, fechaS, estado, cliente, procurador);
+                JOptionPane.showMessageDialog(null, "ASUNTO REGISTRADO CON EXITO");
+                ActualizarVista(controladorA.findAll());
+                limpiar();
+            } else {
+                JOptionPane.showMessageDialog(null, "DEBE INGRESAR UN VALOR NUMERICO \nEN EL CAJETIN: #ASUNTO");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "EXISTEN CAMPOS VACIOS");
+        }
 
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-
+        if(cmbxEstado.getSelectedIndex()!=0 &&!txtBuscar.getText().isEmpty()){
+            int asunto=Integer.parseInt(txtBuscar.getText());
+            String estado=String.valueOf(cmbxEstado.getSelectedItem());
+            controladorA.updateAsunto(asunto, estado);
+            JOptionPane.showMessageDialog(null, "ASUNTO ACTUALIZADO");
+            ActualizarVista(controladorA.findAll());
+        }else{
+           JOptionPane.showMessageDialog(null, "NO SE HA SELECIONADO UN ELEMENTO EN EL CAMPO \nESTADO");
+        }
 
     }//GEN-LAST:event_btnEditarActionPerformed
 

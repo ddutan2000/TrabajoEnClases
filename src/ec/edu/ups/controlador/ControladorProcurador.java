@@ -27,13 +27,13 @@ public class ControladorProcurador {
         Connection con=ControladorBD.conection();
         procurador=new Procurador(cedula, nombre, apellido, fechaDeNacimiento, direccion, telefono);
         try {
-            String sql="insert into procurador (cedula, nombre,apellido,fechdenacimiento,direccion,telefono) "
+            String sql="insert into procurador (cedula, nombre,apellido,fechadenacimiento,direccion,telefono) "
                     + "values (?,?,?,?,?,?)";
             PreparedStatement ps= con.prepareStatement(sql);
             ps.setString(1, procurador.getCedula());
             ps.setString(2, procurador.getNombre());
             ps.setString(3, procurador.getApellido());
-            ps.setDate(4, (java.sql.Date) procurador.getFechaDeNacimiento());
+            ps.setDate(4, new java.sql.Date(procurador.getFechaDeNacimiento().getTime()));
             ps.setString(5, procurador.getDireccion());
             ps.setString(6, procurador.getTelefono());
             ps.execute();

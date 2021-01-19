@@ -20,14 +20,14 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
 
     private ControladorProcurador controladorP;
     private ControladorRegex controladorR;
-    
+
     public VentanaProcurador(ControladorProcurador controladorProcurador, ControladorRegex controladorRegex) {
         initComponents();
-        controladorP=controladorProcurador;
-        controladorR=controladorRegex;
+        controladorP = controladorProcurador;
+        controladorR = controladorRegex;
     }
-    
-        public void limpiar(){
+
+    public void limpiar() {
         txtCedula.setText("");
         txtNombre.setText("");
         txtApellido.setText("");
@@ -35,8 +35,8 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
         txtTelefono.setText("");
         txtFechaN.setText("");
     }
-    
-        public void ActualizarVista(List<Procurador> procuradores) {
+
+    public void ActualizarVista(List<Procurador> procuradores) {
         DefaultTableModel modelo = (DefaultTableModel) tblProcuradores.getModel();
         modelo.setRowCount(0);
         for (Procurador procurador : procuradores) {
@@ -51,7 +51,6 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
         tblProcuradores.setModel(modelo);
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -230,7 +229,7 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
-                if (!txtCedula.getText().isEmpty() && !txtNombre.getText().isEmpty() && !txtApellido.getText().isEmpty()
+        if (!txtCedula.getText().isEmpty() && !txtNombre.getText().isEmpty() && !txtApellido.getText().isEmpty()
                 && !txtTelefono.getText().isEmpty() && !txtDireccion.getText().isEmpty() && !txtFechaN.getText().isEmpty()) {
             controladorR.ingreseRegex("^\\d{10}$");
             boolean vCedula = controladorR.validar(txtCedula.getText());
@@ -238,18 +237,18 @@ public class VentanaProcurador extends javax.swing.JInternalFrame {
                 controladorR.ingreseRegex("^\\d{7,10}$");
                 boolean vTelefono = controladorR.validar(txtTelefono.getText());
                 if (vTelefono) {
-                    String cedula=txtCedula.getText();
-                    String nombre=txtNombre.getText();
-                    String apellido=txtApellido.getText();
-                    String direccion=txtDireccion.getText();
-                    String telefono=txtTelefono.getText();
-                    Date fecha= new Date(txtFechaN.getText());
+                    String cedula = txtCedula.getText();
+                    String nombre = txtNombre.getText();
+                    String apellido = txtApellido.getText();
+                    String direccion = txtDireccion.getText();
+                    String telefono = txtTelefono.getText();
+                    Date fecha = new Date(txtFechaN.getText());
                     controladorP.createProcurador(cedula, nombre, apellido, fecha, direccion, telefono);
-                    JOptionPane.showMessageDialog(null, "CLIENTE REGISTRADO CON EXITO");
+                    JOptionPane.showMessageDialog(null, "PROCURADOR REGISTRADO CON EXITO");
                     limpiar();
                     ActualizarVista(controladorP.findAll());
-                }else{
-                   JOptionPane.showMessageDialog(null, "FORMATO DE TELEFONO INCORRECTO"); 
+                } else {
+                    JOptionPane.showMessageDialog(null, "FORMATO DE TELEFONO INCORRECTO");
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "FORMATO DE CEDULA INCORRECTO");

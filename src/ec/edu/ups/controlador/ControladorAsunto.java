@@ -24,16 +24,16 @@ public class ControladorAsunto {
     public ControladorAsunto() {
     }
 
-    public void CreateAsunto(int numero, Date FechaDeInicio, Date fechaFinal, String estado, String cedulaCliente, String cedulaProcurador) {
+    public void createAsunto(int numero, Date FechaDeInicio, Date fechaFinal, String estado, String cedulaCliente, String cedulaProcurador) {
         asunto = new Asunto(0, FechaDeInicio, fechaFinal, estado, cedulaCliente, cedulaProcurador);
         Connection con = ControladorBD.conection();
         try {
-            String sql = "insert into asunto (numero, fecha_inicio,fecha_final,estado_tramite,cedula_asunto,cedula_procurador) "
+            String sql = "insert into asunto (numero, fecha_inicio,fecha_final,estado_tramite,cedula_cliente,cedula_procurador) "
                     + "values (?,?,?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, asunto.getNumeroCaso());
-            ps.setDate(2, (java.sql.Date) asunto.getFechaDeInicio());
-            ps.setDate(3, (java.sql.Date) asunto.getFechaFinal());
+            ps.setDate(2, new java.sql.Date(asunto.getFechaDeInicio().getTime()));
+            ps.setDate(3, new java.sql.Date(asunto.getFechaFinal().getTime()));
             ps.setString(4, asunto.getEstado());
             ps.setString(5, asunto.getCedulaCliente());
             ps.setString(6, asunto.getCedulaProcurador());
